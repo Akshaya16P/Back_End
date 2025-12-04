@@ -1,0 +1,358 @@
+Synchronous and Asynchronous:
+
+⭐ Synchronous vs Asynchronous in JavaScript (Short Notes)
+✅ Synchronous (Sync)
+
+Definition:
+Synchronous code runs one line at a time, in order.
+A line must finish before the next line starts.
+
+Example:
+
+console.log("A");
+console.log("B");
+console.log("C");
+
+
+Output:
+
+A
+B
+C
+
+
+➡️ Execution waits for each line.
+➡️ This is called blocking because one task blocks the next.
+
+✅ Asynchronous (Async)
+
+Definition:
+Asynchronous code does not block.
+Some tasks run in the background and finish later (like timers, API calls, file loading).
+
+Example:
+
+console.log("A");
+
+setTimeout(() => {
+    console.log("B");
+}, 2000); // runs after 2 seconds
+
+console.log("C");
+
+
+Output:
+
+A
+C
+B
+
+
+➡️ setTimeout() runs later, allowing the program to continue.
+➡️ This is non-blocking, because slow tasks don’t stop the program.
+
+⭐ Why Async is needed?
+
+Some tasks take time:
+
+Fetching data from APIs
+
+Reading files
+
+Database queries
+
+Timers
+
+Network operations
+
+If JavaScript waited (blocked) for these, the whole website/app would freeze.
+So async keeps the UI smooth and responsive.
+
+⭐ Async Tools in JavaScript
+
+JavaScript handles async using:
+
+Callbacks
+
+Promises
+
+async/await
+
+These help manage code that runs later.
+
+⭐ Quick Comparison Table
+Feature	Synchronous	Asynchronous
+Execution	One task at a time	Tasks can run later
+Blocking	Yes	No
+Example	Normal function	setTimeout, Promises
+Output order	Fixed	Can change
+
+==================
+⭐ Callbacks in JavaScript (Brief Notes)
+✅ What is a Callback?
+
+A callback is a function that is passed as an argument to another function and is executed after the main function finishes its work.
+
+It is used to handle asynchronous operations, such as:
+
+Reading data
+
+API calls
+
+Timers
+
+Events
+
+⭐ Why do we use Callbacks?
+
+JavaScript is single-threaded and cannot wait for slow operations.
+Callbacks allow the program to continue running and execute the callback when the task completes.
+
+⭐ Simple Example of a Callback
+function greet(name, callback) {
+    console.log("Hello " + name);
+    callback(); // calling the callback function
+}
+
+function afterGreet() {
+    console.log("Welcome to JavaScript!");
+}
+
+greet("John", afterGreet);
+
+Output:
+Hello John
+Welcome to JavaScript!
+
+⭐ Callback in Asynchronous Code
+setTimeout(() => {
+    console.log("This runs after 2 seconds");
+}, 2000);
+
+
+Here, the function inside setTimeout() is a callback, executed after the timer finishes.
+
+⭐ Callback Hell (Problem with Callbacks)
+
+Too many nested callbacks make the code look messy and hard to read.
+
+Example:
+
+task1(() => {
+    task2(() => {
+        task3(() => {
+            task4(() => {
+                console.log("Done");
+            });
+        });
+    });
+});
+
+
+This is called callback hell or pyramid of doom.
+
+⭐ How Callback Hell Was Solved
+
+Modern JavaScript uses:
+
+Promises
+
+async/await
+
+These make asynchronous code easier to read and manage.
+
+✔️ Summary (Very Short)
+
+Callbacks are functions passed into another function.
+
+Used mostly for asynchronous tasks.
+
+Can cause messy, nested code (callback hell).
+
+Promises and async/await fix those problems.
+============================
+⭐ Promises in JavaScript (Brief Notes)
+✅ What is a Promise?
+
+A Promise is an object in JavaScript that represents the result of an asynchronous operation that will complete in the future.
+
+A Promise can have three states:
+
+Pending – The operation is still running
+
+Fulfilled – The operation completed successfully (resolved)
+
+Rejected – The operation failed (rejected)
+
+⭐ Why use Promises?
+
+To handle asynchronous tasks without blocking the program
+
+To avoid callback hell
+
+To write cleaner, more manageable code
+
+Promises allow us to run tasks in the background and continue executing other code.
+
+⭐ Basic Promise Example
+const promise = new Promise((resolve, reject) => {
+    let success = true;
+
+    if (success) {
+        resolve("Task completed!");
+    } else {
+        reject("Task failed!");
+    }
+});
+
+⭐ Using a Promise with .then() and .catch()
+promise
+    .then(result => {
+        console.log(result);   // runs if resolved
+    })
+    .catch(error => {
+        console.log(error);    // runs if rejected
+    });
+
+⭐ Promise in Asynchronous Operation (Example)
+function fetchData() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve("Data received");
+        }, 2000);
+    });
+}
+
+fetchData().then(result => console.log(result));
+
+Output (after 2 seconds):
+Data received
+
+⭐ Promise Chaining
+
+You can run tasks in sequence:
+
+doTask1()
+  .then(result => doTask2())
+  .then(result => doTask3())
+  .catch(error => console.log(error));
+
+
+Each .then() waits for the previous Promise to finish.
+
+⭐ Advantages of Promises
+
+Avoids callback hell
+
+Easy to read and write
+
+Better error handling using .catch()
+
+Supports chaining
+
+Works perfectly with async/await
+
+⭐ Summary (Very Short)
+
+Promises represent future values from async tasks.
+
+Have three states: pending, fulfilled, rejected.
+
+Use .then() for success and .catch() for errors.
+
+Helps write cleaner asynchronous code.
+======================
+⭐ Async and Await in JavaScript (Brief Notes)
+✅ What is async?
+
+async is a keyword used before a function.
+
+It makes the function return a Promise automatically.
+
+Inside an async function, you can use await.
+
+Example:
+
+async function demo() {
+    return "Hello!";
+}
+
+
+Calling this function:
+
+demo().then(console.log);
+
+⭐ What is await?
+
+await is used inside an async function.
+
+It pauses the function until the Promise resolves.
+
+It makes asynchronous code look like synchronous code.
+
+Example:
+
+async function fetchData() {
+    let result = await Promise.resolve("Data received");
+    console.log(result);
+}
+
+Output:
+Data received
+
+⭐ Why Use async / await?
+
+Cleaner and easier to read than .then() chains
+
+Looks like normal synchronous code
+
+Avoids callback hell
+
+Better error handling using try...catch
+
+⭐ Async/Await Example (Simple)
+function getUser() {
+    return new Promise(resolve => {
+        setTimeout(() => resolve("User Found"), 2000);
+    });
+}
+
+async function showUser() {
+    let user = await getUser();
+    console.log(user);
+}
+
+showUser();
+
+Output after 2 seconds:
+User Found
+
+⭐ Error Handling with try...catch
+async function fetchData() {
+    try {
+        let data = await Promise.reject("Error occurred");
+        console.log(data);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+Output:
+Error occurred
+
+⭐ Key Points (Very Short Summary)
+
+async = makes a function return a Promise
+
+await = waits for a Promise to resolve
+
+Makes async code easier & cleaner
+
+Use try...catch for errors
+
+⭐ Async/Await vs Promises
+Feature	Promises	Async/Await
+Syntax	Uses .then() and .catch()	Looks like synchronous code
+Readability	Can be long & nested	Very clean
+Error Handling	.catch()	try...catch
+Best for	Complex chains	Most async tasks
